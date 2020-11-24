@@ -1,6 +1,9 @@
 const teams = require('../teams')
+const models = require('../models')
 
-const getAllTeams = (request, response) => {
+const getAllTeams = async (request, response) => {
+  const teams = await models.teams.findAll()
+
   return response.send(teams)
 }
 

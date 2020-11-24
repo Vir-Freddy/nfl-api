@@ -4,7 +4,7 @@
   "description": "In the initial commit to this project, you have been provided data about NFL teams. Over the course of the next couple of classes we will use this data to build up a REST API. These exercises will be completed in class.",
   "main": "teams.js",
   "scripts": {
-    "dev": "./node_modules/.bin/nodemon index.js",
+    "dev": "nodemon index.js",
     "lint": "./node_modules/.bin/eslint --format codeframe .",
     "lint:fix": "./node_modules/.bin/eslint --fix --format codeframe .",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,7 +21,9 @@
   "homepage": "https://github.com/Vir-Freddy/nfl-api#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.3.5"
   },
   "devDependencies": {
     "eslint": "^7.13.0",

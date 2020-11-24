@@ -20,6 +20,10 @@ CREATE TABLE Teams (
 
 SHOW TABLES;
 
+CREATE USER 'Kraft'@'localhost' IDENTIFIED WITH mysql_native_password BY 'P@55W0rd';
+
+GRANT ALL ON nflteams.* TO 'Kraft'@'localhost';
+
 DESC teams;
 
 INSERT INTO teams (location, mascot, abbreviation, conference, division) VALUES ('Buffalo','Bills','BUF','AFC','EAST');

@@ -59,7 +59,7 @@ describe('controllers - teams', () => {
     })
   })
 
-  // it('returns a)
+  //it('returns a)
 
   describe('getTeamById', () => {
     it('retrieves the team associated with the provided ID from the DB and calls response.send with it', async () => {

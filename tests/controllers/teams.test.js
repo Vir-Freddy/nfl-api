@@ -3,7 +3,9 @@ const chai = require('chai')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
 const models = require('../../models')
-const { describe, it } = require('mocha')
+const {
+  before, beforeEach, afterEach, describe, it
+} = require('mocha')
 const { teamList, singleTeam, postedTeam } = require('../mocks/teams')
 const { getAllTeams, getTeamById, saveNewTeam } = require('../../controllers/index')
 
@@ -12,11 +14,43 @@ chai.use(sinonChai)
 const { expect } = chai
 
 describe('controllers - teams', () => {
+  let sandbox
+  let stubbedFindOne
+  let stubbedFindAll
+  let stubbedSend
+  let response
+  let stubbedSendStatus
+  let stubbedStatusSend
+  let stubbedStatus
+
+  before(() => {
+    sandbox = sinon.createSandbox()
+
+    stubbedFindOne = sandbox.stub(models.teams, 'findOne')
+
+    stubbedFindAll = sandbox.stub(models.teams, 'findAll')
+
+    stubbedSend = sandbox.stub()
+    stubbedSendStatus = sandbox.stub()
+    stubbedStatusSend = sandbox.stub()
+    stubbedStatus = sandbox.stub()
+
+    response = {
+      send: stubbedSend,
+      sendStatus: stubbedSendStatus,
+      status: stubbedStatus,
+    }
+  })
+  beforeEach(() => {
+    stubbedStatus.returns({ send: stubbedStatusSend })
+  })
+  afterEach(() => {
+    sandbox.reset()
+  })
+
   describe('getAllTeams', () => {
     it('Retrieves a list of teams from the DB and calls response.send() with the list', async () => {
-      const stubbedFindAll = sinon.stub(models.teams, 'findAll').returns(teamList)
-      const stubbedSend = sinon.stub()
-      const response = { send: stubbedSend }
+      stubbedFindAll.returns(teamList)
 
       await getAllTeams({}, response)
 
@@ -25,12 +59,15 @@ describe('controllers - teams', () => {
     })
   })
 
+  // it('returns a)
+
   describe('getTeamById', () => {
     it('retrieves the team associated with the provided ID from the DB and calls response.send with it', async () => {
       const request = { params: { id: 1 } }
       const stubbedSend = sinon.stub()
       const response = { send: stubbedSend }
-      const stubbedFindOne = sinon.stub(models.teams, 'findOne').returns(singleTeam)
+
+      stubbedFindOne.returns(singleTeam)
 
       await getTeamById(request, response)
 

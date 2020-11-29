@@ -57,9 +57,28 @@ describe('controllers - teams', () => {
       expect(stubbedFindAll).to.have.callCount(1)
       expect(stubbedSend).to.have.been.calledWith(teamList)
     })
-  })
 
-  //it('returns a)
+    it('returns aa 404 when no team is found', async () => {
+      stubbedFindOne.returns(null)
+      const request = { params: { id: 'not-found' } }
+
+      await getTeamById(request, response)
+
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { id: 'not-found' } })
+      expect(stubbedSendStatus).to.have.been.calledWith(404)
+    })
+
+    it('returns a 500 with an error message when the database call throws an error', async () => {
+      stubbedFindOne.throws('ERROR!')
+      const request = { params: { id: 'throw-error' } }
+
+      await getTeamById(request, response)
+
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { id: 'throw-error' } })
+      expect(stubbedStatus).to.have.been.calledWith(500)
+      expect(stubbedStatusSend).to.have.been.calledWith('Unable to retrieve team, please try again')
+    })
+  })
 
   describe('getTeamById', () => {
     it('retrieves the team associated with the provided ID from the DB and calls response.send with it', async () => {
